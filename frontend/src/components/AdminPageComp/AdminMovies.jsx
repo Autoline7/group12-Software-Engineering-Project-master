@@ -6,8 +6,7 @@ const AdminMovies = ({addMovieForm}) => {
   const [movies, setMovies] = useState([]);
 
   async function fetchMovies() {
-    const {data} = await axios.get("http://localhost:8080/movies");
-    console.log(data);
+    const {data} = await axios.get("http://localhost:8080/api/movies");
     setMovies(data);
   }
 

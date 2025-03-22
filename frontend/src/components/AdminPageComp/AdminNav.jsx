@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 
-const AdminNav = ({setAddMovieForm, addMovieForm}) => {
+const AdminNav = ({setAddMovieForm, addMovieForm, addCustomerForm, setCustomerForm}) => {
     const location = useLocation();
 
    
@@ -14,9 +14,9 @@ const AdminNav = ({setAddMovieForm, addMovieForm}) => {
           </div>
 
           <div className="admin__nav__buttons" >
-            <button onClick={() => setAddMovieForm(prevState => !prevState)} className="admin__nav__button">{addMovieForm ? "Close Form" : "Add Movies"} </button>
-            <button className="admin__nav__button">Add a Promo Code</button>
-            <button className="admin__nav__button">Add a User</button>
+            {location.pathname === "/Admin-DashBoard" && <button onClick={() => setAddMovieForm(prevState => !prevState)} className="admin__nav__button">{addMovieForm ? "Close Form" : "Add Movies"}</button>}
+            {location.pathname === "/Admin-DashBoard/Manage-PromoCodes" && <button className="admin__nav__button">Add a Promo Code</button>}
+            {location.pathname === "/Admin-DashBoard/Manage-Users" && <button onClick={() => setCustomerForm(prevState => !prevState)} className="admin__nav__button">{addCustomerForm ? "Close Form" : "Add a Customer"}</button>}
           </div>
 
           

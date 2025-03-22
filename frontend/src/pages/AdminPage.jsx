@@ -50,6 +50,7 @@ const AdminPage = () => {
 
 
   const [addMovieForm, setAddMovieForm] = useState(false);
+  const [addCustomerForm, setCustomerForm] = useState(false);
   const location = useLocation();
 
 
@@ -58,11 +59,11 @@ const AdminPage = () => {
         <Sidebar logout={logout} />
         <div className="admin__container">
           <Header loading={loading} userData={userData} />
-          <AdminNav setAddMovieForm={setAddMovieForm} addMovieForm={addMovieForm} />
+          <AdminNav setAddMovieForm={setAddMovieForm} addMovieForm={addMovieForm} setCustomerForm={setCustomerForm} addCustomerForm={addCustomerForm}/>
           <hr />
           <Routes>
             <Route index element={<AdminMovies addMovieForm={addMovieForm} />} />
-            <Route path="Manage-Users" element={<AdminUsers />} />
+            <Route path="Manage-Users" element={<AdminUsers addCustomerForm={addCustomerForm} />} />
             <Route path="Manage-PromoCodes" element={<AdminCodes />} />
           </Routes>
         </div>

@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import "./HomePage.css";
+import axios from "axios";
 
 const moviesData = [
   { id: 1, title: "Inception", category: "Currently Running", trailer: "https://www.youtube.com/embed/YoHD9XEInc0" },
@@ -19,25 +20,27 @@ const HomePage = () => {
 
     const [moviesDataApi, setMoviesDataApi] = useState([]);
 
-    useEffect(() => {
+     useEffect(() => {
         fetchItems();
-    }, []);
+    }, []); 
 
     const fetchItems = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/api/movies`);
-            const data = await response.json();
-            setMoviesDataApi(data);
+          const {data} = await axios.get("http://localhost:8080/api/movies");
+          console.log(data);
+          setMoviesDataApi(data);
         } catch (e) {
             console.error(e.message);
         }
-    }
+    } 
 
     console.log(moviesDataApi);
     const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredMovies = moviesDataApi.filter((movie) =>
+  const filteredMovies = moviesDataApi.filter((movie) =>{
     movie.title.toLowerCase().includes(searchTerm.toLowerCase())
+    console.log(movie);
+  }
   );
 
   return (
