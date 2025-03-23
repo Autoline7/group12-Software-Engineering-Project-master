@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from "axios";
 import SimpleAlert from "../../SimpleAlert";
 import Selector from '../../Selector';
-import ReviewInput from './ReviewInput';
+import ReviewInput from './inputs/ReviewInput';
 
 const AddMovieForm = () => {
     const [datesWithShowtimes, setDatesWithShowtimes] = useState({});

@@ -7,11 +7,10 @@ import "./AdminPage.css";
 import Sidebar from "../components/AdminPageComp/Sidebar";
 import Header from "../components/AdminPageComp/Header";
 import AdminNav from "../components/AdminPageComp/AdminNav";
-import {useLocation } from "react-router-dom";
 import AdminMovies from "../components/AdminPageComp/AdminMovies";
 import AdminCodes from "../components/AdminPageComp/AdminCodes";
-import AdminUsers from "../components/AdminPageComp/AdminUsers";
 import { Routes, Route } from "react-router-dom";
+import AdminUsers from "../components/AdminPageComp/AdminUsers";
 
 const AdminPage = () => {
   const navigate = useNavigate();
@@ -51,7 +50,7 @@ const AdminPage = () => {
 
   const [addMovieForm, setAddMovieForm] = useState(false);
   const [addCustomerForm, setCustomerForm] = useState(false);
-  const location = useLocation();
+  const [addAdminForm, setAdminForm] = useState(false);
 
 
   return (
@@ -59,11 +58,11 @@ const AdminPage = () => {
         <Sidebar logout={logout} />
         <div className="admin__container">
           <Header loading={loading} userData={userData} />
-          <AdminNav setAddMovieForm={setAddMovieForm} addMovieForm={addMovieForm} setCustomerForm={setCustomerForm} addCustomerForm={addCustomerForm}/>
+          <AdminNav setAddMovieForm={setAddMovieForm} addMovieForm={addMovieForm} setCustomerForm={setCustomerForm} addCustomerForm={addCustomerForm} setAdminForm={setAdminForm} addAdminForm={addAdminForm}/>
           <hr />
           <Routes>
-            <Route index element={<AdminMovies addMovieForm={addMovieForm} />} />
-            <Route path="Manage-Users" element={<AdminUsers addCustomerForm={addCustomerForm} />} />
+            <Route index element={<AdminMovies addMovieForm={addMovieForm}/>} />
+            <Route path="Manage-Users" element={<AdminUsers addCustomerForm={addCustomerForm} addAdminForm={addAdminForm}/>} />
             <Route path="Manage-PromoCodes" element={<AdminCodes />} />
           </Routes>
         </div>

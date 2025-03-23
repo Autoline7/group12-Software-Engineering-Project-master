@@ -22,13 +22,13 @@ const SignUp = () => {
     const[showAlert, setShowAlert] = useState(false);
 
 
-    useEffect(() => {
+    /* useEffect(() => {
       onAuthStateChanged(auth, async (user) => {
         if(user){
           setUser(user);
         }
       })
-    }, []);
+    }, []); */
 
     useEffect(() => {
       setIsAdmin(location.pathname.toLowerCase().includes("admin")); 

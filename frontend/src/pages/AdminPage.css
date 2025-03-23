@@ -101,10 +101,19 @@
     width: fit-content;
 }
 
-.admin__movie, .admin__customer{
+.admin__movie{
     background-color: white;
     width: calc(50% - 15px);
     height: 450px;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.admin__admin, .admin__customer{
+    background-color: white;
+    width: calc(50% - 15px);
+    height: 420px;
     border-radius: 10px;
     position: relative;
     overflow: hidden;

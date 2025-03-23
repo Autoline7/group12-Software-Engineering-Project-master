@@ -5,24 +5,18 @@ import Selector from "../../Selector";
 import PaymentCardInput from "./inputs/PaymentCardInput";
 import AddressInput from "./inputs/AddressInput";
 
-const AddCustomerForm = () => {
+const AddAdminForm = () => {
   const [formData, setFormData] = useState({
-    address: { street: "", city: "", state: "", zipCode: "", country: "" },
     decryptedPassword: "",
     email: "",
     firstName: "",
-    isSubscriber: "",
     lastName: "",
-    role: "CUSTOMER",
+    role: "ADMIN",
     status: "ACTIVE",
   });
 
-  const [formDataPaymentCards, setFormDataPaymentCards] = useState({
-    paymentCards: [],
-  });
 
   const [showAlert, setShowAlert] = useState(false);
-  const subscriberOptions = ["TRUE", "FALSE"];
 
   const handleAlert = () => {
     setShowAlert(true);
@@ -37,40 +31,16 @@ const AddCustomerForm = () => {
     }));
   };
 
-  const handleAddressChange = (newAddress) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      address: newAddress,
-    }));
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       console.log("Data being sent:", formData);
       const response = await axios.post(
-        "http://localhost:8080/api/customers",
+        "http://localhost:8080/api/admins",
         formData
       );
-      console.log("Customer created successfully:", response.data);
-
-      const customerResponse = await axios.get(
-        `http://localhost:8080/api/customers/email/${formData.email}`
-      );
-      const customerId = customerResponse.data.userId;
-
-      if (formDataPaymentCards.paymentCards.length > 0) {
-        console.log(formDataPaymentCards);
-        await Promise.all(
-          formDataPaymentCards.paymentCards.map((paymentCard) =>
-            axios.post(
-              `http://localhost:8080/api/payment-cards/customer/${customerId}/new-address`,
-              paymentCard
-            )
-          )
-        );
-      }
+      console.log("Admin created successfully:", response.data);
 
       handleAlert();
       setTimeout(() => window.location.reload(), 3000);
@@ -94,7 +64,7 @@ const AddCustomerForm = () => {
 
   return (
     <div className="admin__customer__form">
-      <h2 className="admin__add__customer__title">Add a New Customer</h2>
+      <h2 className="admin__add__customer__title">Add a New Admin</h2>
       <form onSubmit={handleSubmit} className="admin__add__customer__form">
         <p className="admin__form__required__fields">
           Note: Required = <span className="red">*</span>
@@ -144,52 +114,19 @@ const AddCustomerForm = () => {
           required
         />
 
-        <AddressInput
-          label="Home"
-          address={formData.address}
-          setAddress={handleAddressChange}
-        />
-
-        <label htmlFor="isSubscriber">
-          <span className="red">*</span> Subscriber?:
-        </label>
-        <Selector
-          options={subscriberOptions}
-          selectedValue={formData.isSubscriber}
-          onChange={(value) =>
-            setFormData((prevData) => ({ ...prevData, isSubscriber: value }))
-          }
-          name="isSubscriber"
-          required={true}
-        />
-
-        <label htmlFor="paymentCards">
-          <span className="red">*</span> Payment Card(s):
-        </label>
-        <PaymentCardInput
-          paymentCards={formDataPaymentCards.paymentCards}
-          setPaymentCards={(newCards) =>
-            setFormDataPaymentCards((prev) => ({
-              ...prev,
-              paymentCards: newCards,
-            }))
-          }
-          required
-        />
-
         <div className="admin__add__customer__form__button__container">
           <button
             className="admin__add__customer__form__button"
             type="submit"
           >
-            Create Customer
+            Create Admin
           </button>
         </div>
 
-        {showAlert && <SimpleAlert message="Customer Created Successfully!" />}
+        {showAlert && <SimpleAlert message="Admin Created Successfully!" />}
       </form>
     </div>
   );
 };
 
-export default AddCustomerForm;
+export default AddAdminForm;

@@ -9,7 +9,7 @@ const AdminCustomer = ({customer}) => {
   const [showAlert, setShowAlert] = useState(false);
   const [viewPaymentCards, setViewPaymentCards] = useState(false);
   const addressText = customer.address.street + " " + customer.address.city + " " + customer.address.state + " " + customer.address.zipCode + " " + customer.address.country 
-
+  
 
   const paymentCardsText = customer.paymentCards
   .map((card) =>

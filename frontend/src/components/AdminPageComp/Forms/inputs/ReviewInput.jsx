@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Selector from "../../Selector"; // Import the selector for rating selection
+import Selector from "../../../Selector"; // Import the selector for rating selection
 
 const ReviewInput = ({ reviews, setReviews }) => {
   const ratingOptions = ["1", "2", "3", "4", "5"];
