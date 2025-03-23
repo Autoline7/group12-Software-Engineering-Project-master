@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SimpleAlert from "../../SimpleAlert";
-import Selector from "../../Selector";
-import PaymentCardInput from "./inputs/PaymentCardInput";
-import AddressInput from "./inputs/AddressInput";
 
 const AddAdminForm = () => {
   const [formData, setFormData] = useState({

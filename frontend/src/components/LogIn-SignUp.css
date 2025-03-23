@@ -137,3 +137,7 @@
 .bottom-links a:hover {
   text-decoration: underline;
 }
+
+.signup__popup{
+  padding-top: 30px;
+}
