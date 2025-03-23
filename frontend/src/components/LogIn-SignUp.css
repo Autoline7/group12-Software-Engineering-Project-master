@@ -141,3 +141,68 @@
 .signup__popup{
   padding-top: 30px;
 }
+
+.forgot__password__container {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;  /* Center content vertically */
+  align-items: center;  /* Center content horizontally */
+  border: #b20710 solid 1px;
+
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+  color: black;
+}
+
+
+.forgot__password__h2 {
+  margin: 10px 0px;
+  color: black;
+}
+
+.forgot__password__input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: black;
+}
+
+.forgot__password__button {
+  padding: 10px 20px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.forgot__password__button:hover {
+  background-color: var(--primary-color);
+}
+
+.forgot__password__message {
+  color: black;
+  margin-top: 10px;
+}
+
+.forgot__password__back-to-login{
+  margin: 10px;
+}
+
+.forgot__password__form{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+

@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
-import { auth, db } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore"; 
 import "./AdminPage.css";
 import Sidebar from "../components/AdminPageComp/Sidebar";
 import Header from "../components/AdminPageComp/Header";
@@ -11,40 +8,40 @@ import AdminMovies from "../components/AdminPageComp/AdminMovies";
 import AdminCodes from "../components/AdminPageComp/AdminCodes";
 import { Routes, Route } from "react-router-dom";
 import AdminUsers from "../components/AdminPageComp/AdminUsers";
+import axios from "axios";
 
 const AdminPage = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const admin = JSON.parse(localStorage.getItem("admin")) || null;
 
+  useEffect(() => {
+    if (!admin) {
+      console.error("No email found. Redirecting to login...");
+      navigate("/Log-In");
+      return;
+    }
 
-
-  useEffect(() => {//if user is not signed in take them to log in
-    onAuthStateChanged(auth, async (user) => {
-      if(!user){
-        navigate('/Log-In');
-      } else{
-        setUser(user);
-        const userRef = doc(db, "users", user.uid); 
-        const userSnapshot = await getDoc(userRef);
-        if (userSnapshot.exists()) {
-          setUserData(userSnapshot.data()); // Set the user data
-        }
+    const fetchAdmin = async () => {
+        setUserData(admin);
         setLoading(false);
-      }
+    };
 
-    })
-  }, [auth, navigate]);
+    fetchAdmin();
+  }, [navigate]);
 
-  function logout() {
-    signOut(auth)
-      .then(() => {
-        console.log("User signed out successfully");
-      })
-      .catch((error) => {
-        console.error("Error signing out:", error.message);
-      });
+  async function logout() {
+
+    try {
+      await axios.post("http://localhost:8080/api/admins/logout", {email :userData.email});
+      console.log("User signed out successfully");
+      localStorage.removeItem("admin");
+      navigate("/Log-In");
+    } catch (error) {
+      console.error("Error logging out:", error.response?.data || error.message);
+    }
   }
 
 

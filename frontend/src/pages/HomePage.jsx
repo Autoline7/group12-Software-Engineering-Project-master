@@ -1,103 +1,85 @@
-import {useEffect, useState} from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
-import axios from "axios";
-
-const moviesData = [
-  { id: 1, title: "Inception", category: "Currently Running", trailer: "https://www.youtube.com/embed/YoHD9XEInc0" },
-  { id: 2, title: "Interstellar", category: "Coming Soon", trailer: "https://www.youtube.com/embed/zSWdZVtXT7E" },
-  { id: 3, title: "The Dark Knight", category: "Currently Running", trailer: "https://www.youtube.com/embed/EXeTwQWrcwY" },
-  { id: 4, title: "Avatar", category: "Currently Running", trailer: "https://www.youtube.com/embed/5PSNL1qE6VY" },
-  { id: 5, title: "Titanic", category: "Coming Soon", trailer: "https://www.youtube.com/embed/kVrqfYjkTdQ" },
-  { id: 6, title: "The Matrix", category: "Currently Running", trailer: "https://www.youtube.com/embed/vKQi3bBA1y8" },
-  { id: 7, title: "Gladiator", category: "Coming Soon", trailer: "https://www.youtube.com/embed/P5ieIbInFpg" },
-  { id: 8, title: "Jurassic Park", category: "Currently Running", trailer: "https://www.youtube.com/embed/QWBKEmWWL38" },
-  { id: 9, title: "Mean Girls", category: "Coming Soon", trailer: "https://www.youtube.com/embed/KAOmTMCtGkI" },
-  { id: 10, title: "Avengers: Endgame", category: "Currently Running", trailer: "https://www.youtube.com/embed/TcMBFSGVi1c" }
-];
 
 const HomePage = () => {
+  const [moviesData, setMoviesData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
-    const [moviesDataApi, setMoviesDataApi] = useState([]);
+  const getEmbedUrl = (url) => {
+    if (!url) return "";
+    return url.includes("watch?v=")
+      ? url.replace("watch?v=", "embed/")
+      : url;
+  };
 
-     useEffect(() => {
-        fetchItems();
-    }, []); 
+  useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const res = await fetch("http://localhost:8080/api/movies");
+        if (!res.ok) throw new Error("Failed to fetch movies");
+        const data = await res.json();
+        setMoviesData(data);
+      } catch (err) {
+        console.error("Error fetching movies:", err);
+      }
+    };
 
-    const fetchItems = async () => {
-        try {
-          const {data} = await axios.get("http://localhost:8080/api/movies");
-          console.log(data);
-          setMoviesDataApi(data);
-        } catch (e) {
-            console.error(e.message);
-        }
-    } 
+    fetchMovies();
+  }, []);
 
-    console.log(moviesDataApi);
-    const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredMovies = moviesDataApi.filter((movie) =>{
+  const filteredMovies = moviesData.filter((movie) =>
     movie.title.toLowerCase().includes(searchTerm.toLowerCase())
-    console.log(movie);
-  }
+  );
+
+  const currentlyRunningGenres = ["Drama", "Sci-Fi", "Action"];
+  const comingSoonGenres = ["Fantasy", "Animation"];
+
+  const renderMovieCard = (movie) => (
+    <div key={movie.id} className="movie-card">
+      <h3>{movie.title}</h3>
+      <iframe
+        width="300"
+        height="200"
+        src={getEmbedUrl(movie.video)}
+        title={movie.title}
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    </div>
   );
 
   return (
     <div className="home-container">
-      <header className="header">
-        <h1>Welcome to Cinema E-Booking</h1>
-        <div className="auth-buttons">
-          <Link to="/Log-In" className="auth-button">Login</Link>
-          <Link to="/Sign-Up" className="auth-button">Sign Up</Link>
+      <header className="homepage-header">
+        <h1>Welcome to CineWorld</h1>
+        <div className="homepage-buttons">
+          <button onClick={() => navigate("/Log-In")}>Log In</button>
+          <button onClick={() => navigate("/Sign-Up")}>Sign Up</button>
         </div>
+        <input
+          type="text"
+          placeholder="Search movies..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-bar"
+        />
       </header>
-      <input
-        type="text"
-        placeholder="Search movies..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="search-bar"
-      />
-      <h2>Currently Running</h2>
+
+      <h2 className="homepage-section-title">Currently Running</h2>
       <div className="movies-section">
         {filteredMovies
-          .filter((movie) => movie.runningStatus=== "Currently Running")
-          .map((movie) => (
-            <div key={movie.id} className="movie-card">
-              <h3>{movie.title}</h3>
-              <iframe
-                width="300"
-                height="200"
-                src={movie.video}
-                title={movie.title}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-              <button className="book-button">Book Movie</button>
-            </div>
-          ))}
+          .filter((movie) => currentlyRunningGenres.includes(movie.genre))
+          .map(renderMovieCard)}
       </div>
-      <h2>Coming Soon</h2>
+
+      <h2 className="homepage-section-title">Coming Soon</h2>
       <div className="movies-section">
         {filteredMovies
-          .filter((movie) => movie.runningStatus=== "Coming Soon")
-          .map((movie) => (
-            <div key={movie.id} className="movie-card">
-              <h3>{movie.title}</h3>
-              <iframe
-                width="300"
-                height="200"
-                src={movie.video}
-                title={movie.title}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-              <button className="book-button">Book Movie</button>
-            </div>
-          ))}
+          .filter((movie) => comingSoonGenres.includes(movie.genre))
+          .map(renderMovieCard)}
       </div>
     </div>
   );

@@ -81,8 +81,6 @@ const SignUp = () => {
             console.log("Data being sent:", formCustomer);
             await axios.post("http://localhost:8080/api/customers", formCustomer);
 
-            await axios.post("")
-
             // Hide popup and show success alert
             setShowPopup(false);
             handleAlert();
@@ -108,17 +106,16 @@ const SignUp = () => {
                 <h2 className="form-title">Create Account</h2>
                 <form onSubmit={signUp} action="#" className="login-form">
                     <p className="registration__fields">* Required *</p>
-                    <InputField value={firstName} type="text" placeholder="First Name" icon="person" onChange={(e) => setFirstName(e.target.value)} />
+                    <InputField value={firstName} type="text" placeholder="First Name" icon="person" onChange={(e) => setFirstName(e.target.value)} required={true}/>
                     <p className="registration__fields">* Required *</p>
-                    <InputField value={lastName} type="text" placeholder="Last Name" icon="person" onChange={(e) => setLastName(e.target.value)} />
+                    <InputField value={lastName} type="text" placeholder="Last Name" icon="person" onChange={(e) => setLastName(e.target.value)} required={true} />
                     <p className="registration__fields">* Required *</p>
-                    <InputField value={email} type="email" placeholder="Email address" icon="mail" onChange={(e) => setEmail(e.target.value)} />
+                    <InputField value={email} type="email" placeholder="Email address" icon="mail" onChange={(e) => setEmail(e.target.value)} required={true}/>
                     <p className="registration__fields">* Required *</p>
-                    <InputField value={password} type="password" placeholder="Password.....(6 >= characters)" icon="lock" onChange={(e) => setPassword(e.target.value)} />
+                    <InputField value={password} type="password" placeholder="Password.....(6 >= characters)" icon="lock" onChange={(e) => setPassword(e.target.value)} required={true}/>
                     <p className="registration__fields">* Required *</p>
-                    <InputField value={phone} type="tel" placeholder="Phone Number" icon="call" onChange={(e) => setPhone(e.target.value)} />
-                    <p className="registration__fields">* Required *</p>
-                    <InputField value={phone} type="tel" placeholder="Promo Code" icon="sell" onChange={(e) => setPhone(e.target.value)} />
+                    <InputField value={phone} type="tel" placeholder="Phone Number" icon="call" onChange={(e) => setPhone(e.target.value)} required={true} />
+                    <InputField value={promoCode} type="tel" placeholder="Promo Code" icon="sell" onChange={(e) => setPromoCode(e.target.value)} required={false} />
 
                     {location.pathname === "/Sign-Up/Admin" ? (
                         <>
